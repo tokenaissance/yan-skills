@@ -1,0 +1,114 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "autopilot_mode",
+    "plan_breakdown",
+    "automation_exec"
+  ],
+  "positive_concepts": {
+    "autopilot_mode": [
+      "autopilot",
+      "auto",
+      "无人值守",
+      "全自动",
+      "自动执行",
+      "自己搞定",
+      "直接跑",
+      "别问我",
+      "帮我规划",
+      "你来拆"
+    ],
+    "plan_breakdown": [
+      "调查",
+      "拆解",
+      "阶段计划",
+      "XML",
+      "规划",
+      "计划",
+      "拆"
+    ],
+    "automation_exec": [
+      "部署",
+      "E2E",
+      "代码 review",
+      "修 bug",
+      "把 bug 修了",
+      "bug",
+      "补测试",
+      "优化性能",
+      "功能做完",
+      "扫一遍",
+      "deploy",
+      "e2e",
+      "review"
+    ]
+  },
+  "negative_patterns": [
+    "翻译",
+    "解释一下",
+    "只要总结",
+    "只解释",
+    "translate",
+    "just explain",
+    "summarize only",
+    "写首诗"
+  ],
+  "should_trigger": [
+    {
+      "text": "autopilot，把 bug 修了",
+      "family": "fix_bug"
+    },
+    {
+      "text": "把这个功能做完，你来拆",
+      "family": "plan_and_finish"
+    },
+    {
+      "text": "优化性能，你自己搞定",
+      "family": "optimize_self_drive"
+    },
+    {
+      "text": "直接跑，把代码扫一遍",
+      "family": "scan_code"
+    },
+    {
+      "text": "调查一下为什么 XX，帮我规划并自动部署",
+      "family": "investigate_deploy"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "帮我把这篇文档翻译成英文",
+      "family": "translate_only"
+    },
+    {
+      "text": "解释一下什么是 HTTP",
+      "family": "explain_only"
+    },
+    {
+      "text": "给这个脚本加一个 --help 参数",
+      "family": "script_edit_only"
+    },
+    {
+      "text": "写一首关于海洋的诗",
+      "family": "creative_only"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "这个网站为什么加载慢",
+      "family": "debug_lookup_only"
+    },
+    {
+      "text": "帮我看看这段代码有没有问题",
+      "family": "code_review_lookup_only"
+    },
+    {
+      "text": "规划一下下个月的发布日程",
+      "family": "planning_only"
+    },
+    {
+      "text": "auto 这个词是什么意思",
+      "family": "word_query_only"
+    }
+  ]
+}

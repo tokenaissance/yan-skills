@@ -1,0 +1,106 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "layout_audit",
+    "skills_dir",
+    "link_health"
+  ],
+  "positive_concepts": {
+    "layout_audit": [
+      "audit",
+      "检查",
+      "审计",
+      "目录布局",
+      "layout"
+    ],
+    "skills_dir": [
+      ".agents/skills",
+      ".claude/skills",
+      "skill 链接",
+      "skill 目录",
+      "符号链接",
+      "symlink",
+      "镜像",
+      "skills"
+    ],
+    "link_health": [
+      "missing",
+      "broken",
+      "duplicated",
+      "断链",
+      "重复",
+      "孤儿",
+      "缺失链接",
+      "错目标",
+      "找不到",
+      "不存在",
+      "断了"
+    ],
+    "trigger_phrase": [
+      "skill 没生效",
+      "skill 不一致",
+      "为什么 skill 没识别到",
+      "检查 skill 链接",
+      "ghost skill",
+      "broken skill link",
+      "missing skill"
+    ]
+  },
+  "negative_patterns": [
+    "翻译",
+    "写首诗",
+    "写一篇",
+    "translate",
+    "creative writing"
+  ],
+  "should_trigger": [
+    {
+      "text": "检查一下 skill 链接，为什么 skill 没生效",
+      "family": "not_loading"
+    },
+    {
+      "text": "审计 .agents/skills 和 .claude/skills 的目录布局",
+      "family": "layout_audit"
+    },
+    {
+      "text": "这个 skill 在 .claude/skills 里能加载，但在 .agents/skills 里找不到，怎么回事",
+      "family": "source_missing"
+    },
+    {
+      "text": "为什么 skill 没识别到，检查一下是不是链接断了",
+      "family": "broken_link"
+    },
+    {
+      "text": "帮我看一下重复的 skill 目录和断链",
+      "family": "duplicates_and_broken"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "把这篇文档翻译成英文",
+      "family": "translate_only"
+    },
+    {
+      "text": "写一首关于海洋的诗",
+      "family": "creative_only"
+    },
+    {
+      "text": "给这个脚本加一个 --help 参数",
+      "family": "script_edit_only"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "skill 是什么",
+      "family": "concept_query_only"
+    },
+    {
+      "text": "帮我看一下我的 skill 列表",
+      "family": "list_only"
+    },
+    {
+      "text": "检查一下磁盘空间",
+      "family": "disk_check_only"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "website_lifecycle",
+    "keyword_research",
+    "growth_seo",
+    "rankup_dev"
+  ],
+  "positive_concepts": {
+    "website_lifecycle": [
+      "建站",
+      "网站",
+      "新网站",
+      "内容站",
+      "工具站",
+      "SaaS",
+      "上线",
+      "网站增长",
+      "网站改版",
+      "做站",
+      "site",
+      "website"
+    ],
+    "keyword_research": [
+      "选词",
+      "关键词",
+      "关键词难度",
+      "KD",
+      "竞争度",
+      "SERP",
+      "Google Trends",
+      "谷歌趋势",
+      "搜索热度",
+      "搜索趋势",
+      "trending",
+      "热搜",
+      "市场探测",
+      "这个词能不能做站",
+      "能不能做站"
+    ],
+    "growth_seo": [
+      "SEO",
+      "搜索流量",
+      "排名",
+      "CTR",
+      "索引",
+      "GSC",
+      "外链",
+      "AI 搜索",
+      "AI Overviews",
+      "AI Mode",
+      "GEO",
+      "AEO",
+      "Preferred Sources",
+      "Discover"
+    ],
+    "rankup_dev": [
+      "rankup",
+      "rankup init",
+      "建站",
+      "脚手架",
+      "TanStack",
+      "Cloudflare",
+      "部署",
+      "支付",
+      "Monorepo"
+    ]
+  },
+  "negative_patterns": [
+    "翻译一下",
+    "翻译成",
+    "只要总结",
+    "只解释",
+    "写个标题",
+    "头脑风暴",
+    "translate only",
+    "just explain",
+    "summarize only"
+  ],
+  "should_trigger": [
+    {
+      "text": "rankup init 一个新网站，用 TanStack Start 建站并部署到 Cloudflare",
+      "family": "init_website"
+    },
+    {
+      "text": "帮我看一下 ai headshot generator 这个词能不能做站",
+      "family": "keyword_feasibility"
+    },
+    {
+      "text": "网站上线三个月了，GSC 显示已抓取但未编入索引，该怎么处理",
+      "family": "indexing_recovery"
+    },
+    {
+      "text": "做这个市场的关键词难度分析和 SERP 排名盘面",
+      "family": "serp_landscape"
+    },
+    {
+      "text": "用 Google Trends 对比两个关键词热度，帮我选一个能建站的方向",
+      "family": "trends_to_keyword"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "把这篇技术文章翻译成英文",
+      "family": "translate_only"
+    },
+    {
+      "text": "帮我写一个落地页的产品标题",
+      "family": "copywriting_only"
+    },
+    {
+      "text": "Summarize this note in three bullets.",
+      "family": "summary_only"
+    },
+    {
+      "text": "给这个脚本加一个 --help 参数",
+      "family": "script_edit_only"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "用 Google Trends 查一下这周的热搜话题",
+      "family": "trends_only"
+    },
+    {
+      "text": "只优化这一页的 SEO 标题",
+      "family": "title_tweak_only"
+    },
+    {
+      "text": "rankup 现在是什么版本",
+      "family": "version_query"
+    }
+  ]
+}

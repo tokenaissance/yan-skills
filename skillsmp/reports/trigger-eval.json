@@ -1,0 +1,172 @@
+{
+  "ok": true,
+  "threshold": 0.34,
+  "description_concepts": [
+    "avoid_reinvent",
+    "skill_search",
+    "skillsmp_platform",
+    "treasure_hunt"
+  ],
+  "missing_description_concepts": [],
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "false_positive": 0,
+    "false_negative": 0,
+    "pass_rate": 1.0
+  },
+  "failures": [],
+  "results": {
+    "should_trigger": [
+      {
+        "prompt": "在 SkillsMP 里搜一下 skill",
+        "family": "direct_search",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.5,
+        "matched_concepts": [
+          "skill_search",
+          "skillsmp_platform"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "帮我搜一个写得好但没人知道的冷门 skill",
+        "family": "treasure_hunt",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.5,
+        "matched_concepts": [
+          "skill_search",
+          "treasure_hunt"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "有没有现成的 skill，避免重复造轮子",
+        "family": "avoid_reinvent",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.5,
+        "matched_concepts": [
+          "avoid_reinvent",
+          "skill_search"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "这个领域已经有哪些 skill，帮我搜一下 skill",
+        "family": "domain_inventory",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.5,
+        "matched_concepts": [
+          "avoid_reinvent",
+          "skill_search"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "在 skills 市场找 agent skill",
+        "family": "marketplace_lookup",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.5,
+        "matched_concepts": [
+          "skill_search",
+          "skillsmp_platform"
+        ],
+        "negative_pattern": null
+      }
+    ],
+    "should_not_trigger": [
+      {
+        "prompt": "把这篇文档翻译成英文",
+        "family": "translate_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "翻译"
+      },
+      {
+        "prompt": "写一首关于海洋的诗",
+        "family": "creative_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "帮我改一下这个脚本的 bug",
+        "family": "bugfix_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "总结一下这份会议纪要",
+        "family": "summary_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "总结一下"
+      }
+    ],
+    "near_neighbor": [
+      {
+        "prompt": "这个 skill 是干什么的",
+        "family": "concept_query_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "帮我看一下已安装的 skill 列表",
+        "family": "list_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "搜索引擎怎么优化",
+        "family": "seo_query_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "搜一下这个关键词的流量",
+        "family": "keyword_volume_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      }
+    ]
+  }
+}

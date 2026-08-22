@@ -1,0 +1,104 @@
+{
+  "schema_version": "2.0.0-fastagent-lite",
+  "generated_at": "2026-08-22",
+  "package": {
+    "name": "skillsmp",
+    "version": "1.0.0",
+    "owner": "Yan",
+    "maturity_tier": "production",
+    "lifecycle_stage": "active",
+    "upstream_inspiration": "https://skillsmp.com",
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "在 SkillsMP（1.6M+ 公开 SKILL.md 的索引，覆盖 Claude Code / Codex / ChatGPT）里搜 Agent Skill，按关键词、分类、职业、语言过滤，并专门挖那些「写得好但没人知道」的冷门 Skill。用户说 找个 skill、有没有现成的 skill、搜一下 skill、skillsmp、skills 市场、agent skill 搜索、find a skill、search skills、discover skills 时使用。也用于判断某个领域已经有哪些 Skill、避免重复造轮子。",
+    "job_to_be_done": "Search SkillsMP (a 1.6M+ public SKILL.md index covering Claude Code / Codex / ChatGPT) for agent skills by keyword, category, profession, or language, and deliberately surface well-written but under-known skills. Use it to see what already exists in a domain and avoid reinventing the wheel before writing a new skill.",
+    "target_users": [
+      "skill authors",
+      "engineers looking for an existing skill"
+    ],
+    "inputs": [
+      "keyword or domain",
+      "category / profession / language filters"
+    ],
+    "outputs": [
+      "ranked skill results",
+      "hidden-gem (treasure) results",
+      "JSON output for automation"
+    ],
+    "exclusions": [
+      "skill execution or installation",
+      "web search outside SkillsMP"
+    ],
+    "defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "在 SkillsMP 里搜一下 skill",
+      "帮我搜一个写得好但没人知道的冷门 skill",
+      "有没有现成的 skill，避免重复造轮子",
+      "这个领域已经有哪些 skill，帮我搜一下 skill",
+      "在 skills 市场找 agent skill"
+    ],
+    "should_not_trigger": [
+      "把这篇文档翻译成英文",
+      "写一首关于海洋的诗",
+      "帮我改一下这个脚本的 bug",
+      "总结一下这份会议纪要"
+    ],
+    "near_neighbor": [
+      "这个 skill 是干什么的",
+      "帮我看一下已安装的 skill 列表",
+      "搜索引擎怎么优化",
+      "搜一下这个关键词的流量"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [],
+    "scripts": [],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md"
+    ]
+  },
+  "portability": {
+    "canonical_format": null,
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": [
+      "skillsmp",
+      "找个 skill",
+      "有没有现成的 skill",
+      "搜一下 skill",
+      "skills 市场",
+      "agent skill 搜索",
+      "find a skill",
+      "search skills",
+      "discover skills"
+    ],
+    "execution": {},
+    "trust": {},
+    "permissions": {},
+    "degradation": {}
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

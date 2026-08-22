@@ -1,0 +1,131 @@
+{
+  "schema_version": "2.0.0-fastagent-lite",
+  "generated_at": "2026-08-22",
+  "package": {
+    "name": "backlink",
+    "version": "3.1.0",
+    "owner": "Yan",
+    "maturity_tier": "production",
+    "lifecycle_stage": "active",
+    "upstream_inspiration": "https://github.com/flaqai/backlink_skills; https://github.com/aaron-he-zhu/seo-geo-claude-skills",
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "OpenCLI-first backlink discovery, profile analysis, opportunity qualification, safe browser-assisted form filling, evidence-based verification, and bulk data harvesting from logged-in dashboards. Use for backlinks, external links, competitor link research, blog-comment opportunities, directory submissions, Similarweb/Semrush/Ahrefs discovery, Search Console verification, anchor analysis, toxic-link review, disavow review, outreach templates, scraping SaaS report tables that have no API, driving the owner's logged-in Chrome from a script, or Chinese requests such as 反链、外链、找外链、发外链、评论外链、外链分析、抓后台数据、导出报表、数据面板、数据勘测.",
+    "job_to_be_done": "Complete the backlink lifecycle: discover backlink opportunities, qualify them, safely fill verified forms with the owner's logged-in Chrome, submit only after explicit human approval, verify outcomes with evidence, and harvest tables from logged-in dashboards that have no API.",
+    "target_users": [
+      "indie hackers",
+      "SEO operators",
+      "solo site builders"
+    ],
+    "inputs": [
+      "target URL or domain",
+      "competitor domains",
+      "exported backlink CSVs",
+      "dashboard sessions"
+    ],
+    "outputs": [
+      "qualified opportunity queue",
+      "safe-fill review payloads",
+      "ledger states (candidate → … → rel_verified)",
+      "harvested report tables"
+    ],
+    "exclusions": [
+      "unverified directory lists",
+      "auto-submitting without approval",
+      "guessing publication from a confirmation notice"
+    ],
+    "defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "找一下 example.com 的外链来源，验证并评估外链质量",
+      "把这些目录站的外链机会整理出来，填表但不真正提交",
+      "用 Similarweb 找竞争对手的反链，把后台报表数据抓下来导出",
+      "分析导出的外链 CSV：质量、毒性、锚文本多样性、竞争对手缺口",
+      "把这次提交的台账核一遍，确认哪些是 public、indexed 还是 nofollow"
+    ],
+    "should_not_trigger": [
+      "把这篇新闻翻译成中文",
+      "给这个 Python 脚本加一个参数",
+      "帮我写一段产品介绍文案",
+      "Write a haiku about the ocean."
+    ],
+    "near_neighbor": [
+      "这个网站的反链是不是没有了",
+      "帮我导出这个 Excel 表格",
+      "登一下这个 SaaS 后台看看",
+      "这个网站能提交吗"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [
+      "references/acquisition-doctrine.md",
+      "references/analysis-templates.md",
+      "references/authorized-data-sources.md",
+      "references/backlinkdirs.md",
+      "references/batch-campaign.md",
+      "references/browser-runtime.md",
+      "references/credits.md",
+      "references/directory-run-playbook.md",
+      "references/discovery-loop.md",
+      "references/field-notes.md",
+      "references/harvest.md",
+      "references/index-submission.md",
+      "references/instant-publish.md",
+      "references/link-quality-rubric.md",
+      "references/outreach-templates.md",
+      "references/paid-platforms.md",
+      "references/prompts.md",
+      "references/safety-policy.md",
+      "references/submission-lanes.md",
+      "references/traffic-screen.md"
+    ],
+    "scripts": [],
+    "evals": [
+      "evals/evals.json",
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md"
+    ]
+  },
+  "portability": {
+    "canonical_format": null,
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": [
+      "外链",
+      "反链",
+      "找外链",
+      "发外链",
+      "外链分析",
+      "抓后台数据",
+      "导出报表",
+      "backlinks",
+      "directory submission"
+    ],
+    "execution": {},
+    "trust": {},
+    "permissions": {},
+    "degradation": {}
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

@@ -1,0 +1,23 @@
+interface:
+  display_name: "SkillsMP Search"
+  short_description: "Search the SkillsMP 1.6M+ SKILL.md index and surface well-written but under-known skills."
+  default_prompt: "Use $skillsmp to search SkillsMP for existing agent skills by keyword, category, profession, or language, and to find well-written but under-known skills before reinventing the wheel."
+compatibility:
+  adapter_targets:
+    - openai
+    - claude
+    - generic
+    - agent-skills-compatible
+  activation:
+    - "skillsmp"
+    - "找个 skill"
+    - "有没有现成的 skill"
+    - "搜一下 skill"
+    - "skills 市场"
+    - "agent skill 搜索"
+    - "find a skill"
+    - "search skills"
+    - "discover skills"
+  gates:
+    - "动手写新 Skill 之前先搜一遍"
+    - "API Key 只放 .env，绝不进仓库"
