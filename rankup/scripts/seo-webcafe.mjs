@@ -123,7 +123,22 @@ function parseArgs(argv) {
  * 所以本脚本零配置即可跑，配额不够时再补 Cookie。
  */
 function cookie() {
-  return process.env.SEO_WEBCAFE_COOKIE || "";
+  if (process.env.SEO_WEBCAFE_COOKIE) return process.env.SEO_WEBCAFE_COOKIE;
+  // 与令牌一致：.env 兜底。SKILL.md 把 SEO_WEBCAFE_COOKIE 列为 .env 配置项，
+  // 但此前脚本只读环境变量——按文档配了 .env 却仍停在匿名档，属于必须修掉的一类静默失效。
+  try {
+    const envFile = join(dirname(dirname(fileURLToPath(import.meta.url))), ".env");
+    for (const line of readFileSync(envFile, "utf8").split("\n")) {
+      const i = line.indexOf("=");
+      if (i > 0 && line.slice(0, i).trim() === "SEO_WEBCAFE_COOKIE") {
+        const v = line.slice(i + 1).trim();
+        if (v) return v;
+      }
+    }
+  } catch {
+    /* 没有 .env 是正常情况 */
+  }
+  return "";
 }
 function authHeaders() {
   const c = cookie();
