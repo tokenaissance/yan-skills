@@ -8,7 +8,7 @@
 
 `backlink` 是完整的外链生命周期 Skill：发现机会、评估资格、用你自己的登录态浏览器安全填表、**每次提交都要你点头**、再用证据验证结果。SKILL.md 是 XML 结构（v3.1）——这个 Skill 的主体是法则和路由，打了标签的块让「我刚才违反了哪一条」这个问题有名字可答。
 
-**34 个脚本 + 19 篇方法论 + 4 个机读数据文件。**
+**34 个脚本 + 20 篇参考文档 + 4 个机读数据文件。**
 
 ```bash
 npx skills add yan-labs/yan-skills --skill backlink -g -y
@@ -44,7 +44,7 @@ backlink/
 ├── SKILL.md              ← 法则 + 路由 + 工作流入口
 ├── CONTRIBUTING.md       ← 证据规则与数据模型
 ├── data/                 ← 数据库：submission-targets / free-channels / paid-platforms / index-submission
-├── references/           ← 19 篇方法论（浏览器法则、批量投放、harvest、授权数据源…）
+├── references/           ← 20 篇参考文档（浏览器法则、批量投放、harvest、授权数据源…）
 ├── scripts/              ← 34 个脚本（health / targets-select / inspect-page / safe-fill / ledger…）
 ├── evals/                ← 触发评测与输出评测
 └── agents/interface.yaml ← 跨 Agent 接口

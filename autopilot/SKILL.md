@@ -36,12 +36,6 @@ npx skills update autopilot -g -y
 
 若使用项目级安装，去掉安装命令中的 `-g`；项目级更新使用 `npx skills update autopilot -p -y`。
 
-接收一句话，自动拆解成结构化执行计划，然后以无人值守模式完整执行到底。
-
-用户调用 autopilot 意味着：**授权 AI 完全自主地完成整套流程**——
-调查、实现、部署、E2E 验证、代码 review、二次部署、二次验证、收尾。
-不需要中途确认，不允许跳过任何阶段，不允许半途而废。
-
 ---
 
 ## Loop 强制执行规则 (CRITICAL · 最高优先级)

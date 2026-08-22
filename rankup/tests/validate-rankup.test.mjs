@@ -157,3 +157,26 @@ test("release validator rejects a broken linked reference", async () => {
     assert.match(result.stderr, /broken local Markdown link/);
   });
 });
+
+test("release validator rejects a tracked .cf-token", async () => {
+  await withSkillCopy(async (skillRoot) => {
+    await writeFile(
+      path.join(skillRoot, ".cf-token"),
+      "dummy-cloudflare-token-that-must-never-be-committed\n",
+    );
+    const init = spawnSync("git", ["init", "-q"], {
+      cwd: skillRoot,
+      encoding: "utf8",
+    });
+    assert.equal(init.status, 0, init.stderr);
+    // .gitignore 只是约定,一个 `git add -f` 就能绕过——断言要拦的正是这个。
+    const add = spawnSync("git", ["add", "-f", ".cf-token"], {
+      cwd: skillRoot,
+      encoding: "utf8",
+    });
+    assert.equal(add.status, 0, add.stderr);
+    const result = validate(skillRoot);
+    assert.equal(result.status, 1, "被追踪的 .cf-token 必须让验证失败");
+    assert.match(result.stderr, /\.cf-token/);
+  });
+});

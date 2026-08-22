@@ -112,7 +112,7 @@ Cloudflare-first: SSR and API on Workers, transactional data on D1, files and ex
 
 The `SKILL.md` is XML-structured (v3.1). The reason is in the file header: this Skill is mostly laws and routing, and a law that is easy to skim past is a law that gets broken. Tagged blocks make "which rule did I just violate" answerable by name.
 
-**34 scripts + 19 methodology docs + 4 machine-readable data files.**
+**34 scripts + 20 reference docs + 4 machine-readable data files.**
 
 ### The data assets: the most expensive part of this Skill
 
@@ -375,7 +375,7 @@ python3 /path/to/fastagent-meta-skill/scripts/trigger_eval.py rankup --cases eva
 ## Troubleshooting
 
 **Q: Can `backlink` be used without OpenCLI?**
-Yes. The 492-entry library, 141 paid platforms, 19 methodology docs, link-quality scoring, and outreach templates are all pure data and methods — no browser needed. Only actually driving the browser for harvesting and filling requires it.
+Yes. The 492-entry library, 141 paid platforms, 20 reference docs, link-quality scoring, and outreach templates are all pure data and methods — no browser needed. Only actually driving the browser for harvesting and filling requires it.
 
 **Q: Can `rankup` be used without tokens?**
 Mostly. Every `seo-webcafe.mjs` subcommand except `kd` and `chat` runs anonymous, guest quota 10/day. `kd` needs a self-served public API token; `chat` needs login state. `gt.py` needs no token.

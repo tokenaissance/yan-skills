@@ -1,0 +1,56 @@
+name: skill quality gates
+
+# 全仓库的机械门禁：单测、语法、数据、XML 引用、项目中立/凭据断言。
+# 之前只有 backlink 数据一个 workflow，rankup 的单测与隐私断言没接 CI，
+# 回归不会被自动发现——这里把其余门禁都接上。
+on:
+  pull_request:
+    paths:
+      - "backlink/**"
+      - "rankup/**"
+      - "skill-link-check/**"
+      - "skillsmp/**"
+      - "autopilot/**"
+  push:
+    branches: [main]
+    paths:
+      - "backlink/**"
+      - "rankup/**"
+      - "skill-link-check/**"
+      - "skillsmp/**"
+      - "autopilot/**"
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Node unit tests
+        run: node --test backlink/tests/*.test.mjs rankup/tests/*.test.mjs
+      - name: Syntax check all scripts
+        run: |
+          set -e
+          for f in backlink/scripts/*.mjs rankup/scripts/*.mjs skillsmp/scripts/*.mjs; do
+            node --check "$f"
+          done
+      - name: Backlink data gate
+        working-directory: backlink
+        run: node scripts/validate-data.mjs
+      - name: Backlink SKILL.md XML gate
+        working-directory: backlink
+        run: node scripts/validate-skill-xml.mjs
+      - name: Rankup neutrality and secrets gate
+        run: node rankup/scripts/validate-rankup.mjs
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: skill-link-check unit tests
+        run: python3 -m unittest discover -s skill-link-check/tests -v

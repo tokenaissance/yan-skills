@@ -5,3 +5,7 @@ registry.md
 # gt 合并进来时带过来的 KD 令牌(wc_mcp_ 开头)。真实密钥，绝不提交。
 # scripts/gt.py 与 scripts/seo-webcafe.mjs 都从这里或同名环境变量读。
 .env
+
+# Cloudflare API 令牌（cf-zone-setup / cf-analytics-setup 的兜底读取位置）。
+# 真实密钥，绝不提交；validate-rankup.mjs 断言它不被 git 追踪。
+.cf-token

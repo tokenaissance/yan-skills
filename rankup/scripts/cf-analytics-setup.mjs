@@ -9,8 +9,9 @@
  * 站点由 Cloudflare 代理时用 auto_install：beacon 由边缘在 HTML 响应经过时注入，
  * 不需要改代码、不需要发版。Workers custom domain 本身就是代理态，满足条件。
  *
- * 凭据：只从环境变量 CLOUDFLARE_API_TOKEN 读，读不到就退到 <repo>/.cf-token
- * （该文件已被 .gitignore 排除）。真实值不打印、不落盘、不进日志。
+ * 凭据：只从环境变量 CLOUDFLARE_API_TOKEN 读，读不到就退到本 Skill 根目录的
+ * .cf-token（已被 .gitignore 排除，validate-rankup.mjs 断言它不被 git 追踪；
+ * 旧版本写在项目根的 .cf-token 仍兼容读取）。真实值不打印、不落盘、不进日志。
  *
  * 需要的权限：Account > Account Analytics > Edit（RUM）+ Zone > Zone > Read。
  * 不要用 Global API Key：它不能限定 scope，泄露即等于整个账号。
@@ -18,17 +19,23 @@
  * 已验证：2026-08-21
  */
 import { readFileSync, existsSync } from "node:fs"
-import { join } from "node:path"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
 
 const API = "https://api.cloudflare.com/client/v4"
+const skillRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 
 function token() {
   if (process.env.CLOUDFLARE_API_TOKEN) return process.env.CLOUDFLARE_API_TOKEN.trim()
-  const f = join(process.cwd(), ".cf-token")
-  if (existsSync(f)) return readFileSync(f, "utf8").trim()
+  // 与 SKILL.md「令牌统一放 Skill 根目录」一致：优先 Skill 根目录（有 gitignore
+  // 和断言双重防线），旧版本写在项目根的 .cf-token 继续兼容读取。
+  for (const base of [skillRoot, process.cwd()]) {
+    const f = join(base, ".cf-token")
+    if (existsSync(f)) return readFileSync(f, "utf8").trim()
+  }
   console.error(`找不到 API token。二选一：
   export CLOUDFLARE_API_TOKEN=...        （当前 shell 有效）
-  echo '...' > .cf-token                 （已 gitignore）
+  echo '...' > ${join(skillRoot, ".cf-token")}   （已 gitignore + 断言）
 
 token 在 dash.cloudflare.com → My Profile → API Tokens → Create Token → Custom：
   权限  Zone > Zone > Edit

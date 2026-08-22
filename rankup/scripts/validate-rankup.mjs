@@ -113,9 +113,10 @@ const leakScanExcludes = new Set([
 // .gitignore 只是约定,一个 `git add -f` 就能绕过。把"绝不被追踪"变成断言。
 // 非 git 环境(已安装副本)下无从判断,跳过而不是误报。
 //
-// 两个文件走同一条防线,但泄漏的是不同东西:
+// 三个文件走同一条防线,但泄漏的是不同东西:
 //   registry.md — 项目名与绝对路径
 //   .env        — 第三方工具账号的真实令牌(SKILL.md「令牌统一放 .env」那一节)
+//   .cf-token   — Cloudflare API 令牌(cf-zone-setup / cf-analytics-setup 的兜底文件)
 // 后者一旦提交,令牌就进了公开仓库的历史,改密码都追不回来。
 const MUST_STAY_UNTRACKED = [
   {
@@ -125,6 +126,10 @@ const MUST_STAY_UNTRACKED = [
   {
     file: ".env",
     why: "它含第三方工具账号的真实令牌",
+  },
+  {
+    file: ".cf-token",
+    why: "它含 Cloudflare API 令牌的真实值(cf-zone-setup / cf-analytics-setup 读取)",
   },
 ];
 

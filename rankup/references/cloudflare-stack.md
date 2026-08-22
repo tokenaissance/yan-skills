@@ -158,9 +158,10 @@ nameserver 对 → 把这对 NS 交给用户。
 
 **路径 B（退路）：用户已有 API 凭据时，走脚本。**
 浏览器不可用时（扩展未连接、用户机器网络受限、无图形界面），用
-`scripts/cf-zone-setup.mjs`。让**用户自己**把凭据写进项目根的 `.cf-token`
-（该文件必须先加入 `.gitignore`），或导出为环境变量；脚本自行读取，
-凭据值不经过对话、不进日志、不落提交。
+`scripts/cf-zone-setup.mjs`。让**用户自己**把凭据写进本 Skill 根目录的
+`.cf-token`（`rankup/.gitignore` 已排除，`validate-rankup.mjs` 断言它不被 git
+追踪；旧版本写在项目根的 `.cf-token` 仍兼容读取），或导出为环境变量；
+脚本自行读取，凭据值不经过对话、不进日志、不落提交。
 
 ```bash
 node <rankup-skill-dir>/scripts/cf-zone-setup.mjs status <domain>   # 先只读探测
