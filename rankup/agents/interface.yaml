@@ -1,0 +1,23 @@
+interface:
+  display_name: "Rankup — Website Lifecycle"
+  short_description: "Operate the full website lifecycle from keyword research to launch to iterative growth."
+  default_prompt: "Use $rankup to operate the full website lifecycle: recover project context, research keywords and markets, initialize and deploy a site, run SEO, and keep project memory in .rankup/."
+compatibility:
+  adapter_targets:
+    - openai
+    - claude
+    - generic
+    - agent-skills-compatible
+  activation:
+    - "rankup init"
+    - "rankup review"
+    - "建站"
+    - "网站改版"
+    - "Google Trends"
+    - "关键词难度"
+    - "选词"
+    - "AI 搜索优化"
+  gates:
+    - "先查脚本清单，禁止重造轮子"
+    - "数据获取按优先级，禁止跳级"
+    - "项目信息不得写入 Skill 层"

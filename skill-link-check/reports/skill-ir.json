@@ -1,0 +1,98 @@
+{
+  "schema_version": "2.0.0-fastagent-lite",
+  "generated_at": "2026-08-22",
+  "package": {
+    "name": "skill-link-check",
+    "version": "1.0.0",
+    "owner": "Yan",
+    "maturity_tier": "production",
+    "lifecycle_stage": "active",
+    "upstream_inspiration": null,
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "Audit project and global .agents/skills and .claude/skills layouts. Verify that .agents/skills contains the real source and .claude/skills mirrors it through a parent or per-skill symlink. Use whenever a skill or slash command is missing, not loading, duplicated, inconsistent, or described as \"skill 没生效\", \"skill 不一致\", \"为什么 skill 没识别到\", \"检查 skill 链接\", ghost skill, broken skill link, or missing skill. Also use when a skill exists in one directory but not the other.",
+    "job_to_be_done": "Audit project and global .agents/skills and .claude/skills layouts: verify that .agents/skills holds the real source and .claude/skills mirrors it through a parent or per-skill symlink. Report orphan directories, missing links, duplicated directories, broken links, and wrong targets with reviewable fix commands. Audit only; never modify the audited directories.",
+    "target_users": [
+      "engineers with many installed skills",
+      "anyone debugging a skill that will not load"
+    ],
+    "inputs": [
+      "project or global .agents/skills and .claude/skills trees"
+    ],
+    "outputs": [
+      "layout audit report with evidence",
+      "suggested fix commands for human review"
+    ],
+    "exclusions": [
+      "automatically moving, deleting, or overwriting files",
+      "editing the audited directories"
+    ],
+    "defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "检查一下 skill 链接，为什么 skill 没生效",
+      "审计 .agents/skills 和 .claude/skills 的目录布局",
+      "这个 skill 在 .claude/skills 里能加载，但在 .agents/skills 里找不到，怎么回事",
+      "为什么 skill 没识别到，检查一下是不是链接断了",
+      "帮我看一下重复的 skill 目录和断链"
+    ],
+    "should_not_trigger": [
+      "把这篇文档翻译成英文",
+      "写一首关于海洋的诗",
+      "给这个脚本加一个 --help 参数"
+    ],
+    "near_neighbor": [
+      "skill 是什么",
+      "帮我看一下我的 skill 列表",
+      "检查一下磁盘空间"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [],
+    "scripts": [],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md"
+    ]
+  },
+  "portability": {
+    "canonical_format": null,
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": [
+      "skill 没生效",
+      "skill 不一致",
+      "为什么 skill 没识别到",
+      "检查 skill 链接",
+      "ghost skill",
+      "broken skill link",
+      "missing skill"
+    ],
+    "execution": {},
+    "trust": {},
+    "permissions": {},
+    "degradation": {}
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

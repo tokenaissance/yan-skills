@@ -1,0 +1,131 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "backlink_work",
+    "form_submit",
+    "dashboard_harvest"
+  ],
+  "positive_concepts": {
+    "backlink_work": [
+      "backlink",
+      "backlinks",
+      "external links",
+      "link building",
+      "反链",
+      "外链",
+      "找外链",
+      "发外链",
+      "评论外链",
+      "外链分析",
+      "外链质量"
+    ],
+    "form_submit": [
+      "form filling",
+      "directory submissions",
+      "blog-comment",
+      "outreach",
+      "提交",
+      "填表",
+      "表单",
+      "safe-fill",
+      "submit"
+    ],
+    "dashboard_harvest": [
+      "harvesting",
+      "logged-in dashboards",
+      "scraping",
+      "no API",
+      "Similarweb",
+      "Semrush",
+      "Ahrefs",
+      "Search Console",
+      "抓后台数据",
+      "导出报表",
+      "数据面板",
+      "数据勘测",
+      "后台"
+    ],
+    "verification": [
+      "evidence-based",
+      "verification",
+      "verified",
+      "anchor analysis",
+      "toxic-link",
+      "disavow",
+      "锚文本",
+      "毒性",
+      "验证",
+      "台账",
+      "ledger"
+    ]
+  },
+  "negative_patterns": [
+    "翻译",
+    "只要总结",
+    "只解释",
+    "写个标题",
+    "头脑风暴",
+    "translate",
+    "just explain",
+    "summarize only",
+    "copywriting"
+  ],
+  "should_trigger": [
+    {
+      "text": "找一下 example.com 的外链来源，验证并评估外链质量",
+      "family": "link_profile"
+    },
+    {
+      "text": "把这些目录站的外链机会整理出来，填表但不真正提交",
+      "family": "safe_fill_only"
+    },
+    {
+      "text": "用 Similarweb 找竞争对手的反链，把后台报表数据抓下来导出",
+      "family": "harvest_dashboard"
+    },
+    {
+      "text": "分析导出的外链 CSV：质量、毒性、锚文本多样性、竞争对手缺口",
+      "family": "profile_analysis"
+    },
+    {
+      "text": "把这次提交的台账核一遍，确认哪些是 public、indexed 还是 nofollow",
+      "family": "ledger_verification"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "把这篇新闻翻译成中文",
+      "family": "translate_only"
+    },
+    {
+      "text": "给这个 Python 脚本加一个参数",
+      "family": "script_edit_only"
+    },
+    {
+      "text": "帮我写一段产品介绍文案",
+      "family": "copywriting_only"
+    },
+    {
+      "text": "Write a haiku about the ocean.",
+      "family": "creative_only"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "这个网站的反链是不是没有了",
+      "family": "link_lookup_only"
+    },
+    {
+      "text": "帮我导出这个 Excel 表格",
+      "family": "export_table_only"
+    },
+    {
+      "text": "登一下这个 SaaS 后台看看",
+      "family": "login_dashboard_only"
+    },
+    {
+      "text": "这个网站能提交吗",
+      "family": "submit_query_only"
+    }
+  ]
+}

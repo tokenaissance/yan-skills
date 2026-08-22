@@ -1,0 +1,107 @@
+{
+  "schema_version": "2.0.0-fastagent-lite",
+  "generated_at": "2026-08-22",
+  "package": {
+    "name": "autopilot",
+    "version": "1.0.0",
+    "owner": "Yan",
+    "maturity_tier": "production",
+    "lifecycle_stage": "active",
+    "upstream_inspiration": null,
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "接收一句模糊指令，自动调查、分类、拆解为 XML 阶段计划、选 skill、定完成判定，\n然后以无人值守模式通过 loop/goal + agent-mode 完整执行到底——\n包括自动部署、自动 E2E 测试、自动代码 review，不跳过任何阶段。\n当用户扔过来一句宽泛任务时主动使用——\"把 bug 修了\"、\"补测试\"、\n\"优化性能\"、\"把这个功能做完\"、\"代码扫一遍\"、\"调查一下为什么 XX\"。\n也在用户说\"autopilot\"、\"auto\"、\"帮我规划\"、\"自己搞定\"、\"直接跑\"、\n\"你来拆\"、\"别问我怎么做\"时触发。即使用户没有说这些关键词，\n只要输入明显是未拆解的宽泛意图，也应该主动激活。\n调用 autopilot = 授权全自动无人值守执行，不需要中途确认。",
+    "job_to_be_done": "Take one vague instruction and carry it out to completion in unattended mode: investigate, classify, break it into an XML phased plan, pick skills, define completion criteria, then execute through loop/goal + agent-mode without skipping stages — including auto deploy, auto E2E, and auto code review.",
+    "target_users": [
+      "indie hackers",
+      "engineers who delegate execution"
+    ],
+    "inputs": [
+      "vague one-line task"
+    ],
+    "outputs": [
+      "executed task with deployment and E2E verification",
+      "completed code review"
+    ],
+    "exclusions": [
+      "explicit step-by-step commands that should be done manually",
+      "tasks that require mid-flight human confirmation by contract"
+    ],
+    "defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "autopilot，把 bug 修了",
+      "把这个功能做完，你来拆",
+      "优化性能，你自己搞定",
+      "直接跑，把代码扫一遍",
+      "调查一下为什么 XX，帮我规划并自动部署"
+    ],
+    "should_not_trigger": [
+      "帮我把这篇文档翻译成英文",
+      "解释一下什么是 HTTP",
+      "给这个脚本加一个 --help 参数",
+      "写一首关于海洋的诗"
+    ],
+    "near_neighbor": [
+      "这个网站为什么加载慢",
+      "帮我看看这段代码有没有问题",
+      "规划一下下个月的发布日程",
+      "auto 这个词是什么意思"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [
+      "references/concurrency-and-landing.md",
+      "references/evidence-and-verification.md",
+      "references/execution-budget.md",
+      "references/learning-and-audit.md",
+      "references/ownership-and-tracker.md",
+      "references/phase-library.md"
+    ],
+    "scripts": [],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md"
+    ]
+  },
+  "portability": {
+    "canonical_format": null,
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": [
+      "autopilot",
+      "auto",
+      "帮我规划",
+      "自己搞定",
+      "直接跑",
+      "你来拆",
+      "别问我怎么做"
+    ],
+    "execution": {},
+    "trust": {},
+    "permissions": {},
+    "degradation": {}
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

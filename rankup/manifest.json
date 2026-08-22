@@ -1,0 +1,52 @@
+{
+  "name": "rankup",
+  "version": "2.32.0",
+  "owner": "Yan",
+  "updated_at": "2026-08-22",
+  "status": "active",
+  "maturity_tier": "production",
+  "lifecycle_stage": "active",
+  "context_budget_tier": "production",
+  "review_cadence": "quarterly",
+  "upstream_inspiration": "https://seo.web.cafe",
+  "intent": {
+    "job_to_be_done": "Operate the full website lifecycle from keyword to live site to iterative growth: recover project context, research opportunities, initialize a TanStack Start monorepo, deploy on Cloudflare (Workers/D1/R2), integrate payments, run technical SEO/content/index/CTR optimization, distribute compliantly, and write project facts and decisions back to .rankup/.",
+    "target_users": [
+      "indie hackers",
+      "SEO operators",
+      "solo site builders"
+    ],
+    "inputs": [
+      "repository",
+      "keyword or market",
+      "GSC / analytics access",
+      "past conversations"
+    ],
+    "outputs": [
+      ".rankup/ project memory",
+      "roadmap and P0-P2 plan",
+      "deployed site",
+      "SEO / keyword research reports"
+    ],
+    "exclusions": [
+      "one-off translations",
+      "generic copywriting",
+      "pure chat without a website objective"
+    ],
+    "defaults": {
+      "default_stack": "TanStack Start monorepo on Cloudflare Workers/D1/R2",
+      "default_remote_privacy": "private until launch",
+      "memory_dir": ".rankup/"
+    }
+  },
+  "release_gates": [
+    "validate_skill",
+    "trigger_eval",
+    "skill_ir_export",
+    "version_consistency",
+    "bilingual_readme",
+    "evidence_reports",
+    "upstream_credit",
+    "mechanical_privacy_assertions"
+  ]
+}

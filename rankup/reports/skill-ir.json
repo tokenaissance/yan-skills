@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0.0-fastagent-lite",
+  "generated_at": "2026-08-22",
+  "package": {
+    "name": "rankup",
+    "version": "2.32.0",
+    "owner": "Yan",
+    "maturity_tier": "production",
+    "lifecycle_stage": "active",
+    "upstream_inspiration": "https://seo.web.cafe",
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "网站从零到一与长期增长的总控 Skill。用于新建网站、SaaS、工具站或内容站，规划或初始化 TanStack Start Monorepo，使用 Cloudflare Workers、D1、R2 部署全栈应用，接入支付，执行 SEO、内容、外链、上线验证和持续迭代；也负责 Google Trends 查询、关键词难度（KD）估算与选词工作流；2026 AI 搜索范式（AI Overviews、AI Mode、Preferred Sources、Discover 独立算法、Information Gain、引用优先于排名）。用户提到 rankup、rankup init、建站、网站改版、搜索流量、GSC、排名、关键词、CTR、索引、网站增长，或提到 谷歌趋势、Google Trends、搜索热度、热度对比、搜索趋势、trending、\"XX 和 YY 哪个更火\"、\"今天美国/日本在搜什么\"、每日热搜、\"这个词能不能做站\"、\"哪个市场/国家有机会\"、帮我选 SEO 关键词、选词、选品调研、市场探测、关键词难度、KD、竞争度、SERP 分析、\"这个词难不难做\"、\"做这个词要多少外链\"，或提到 AI 搜索优化、AI Overviews、AI Mode、被 AI 引用、AEO、GEO、Preferred Sources、Discover 优化、Google 算法更新、核心更新、spam 更新、Information Gain 时使用。",
+    "job_to_be_done": "Operate the full website lifecycle from keyword to live site to iterative growth: recover project context, research opportunities, initialize a TanStack Start monorepo, deploy on Cloudflare (Workers/D1/R2), integrate payments, run technical SEO/content/index/CTR optimization, distribute compliantly, and write project facts and decisions back to .rankup/.",
+    "target_users": [
+      "indie hackers",
+      "SEO operators",
+      "solo site builders"
+    ],
+    "inputs": [
+      "repository",
+      "keyword or market",
+      "GSC / analytics access",
+      "past conversations"
+    ],
+    "outputs": [
+      ".rankup/ project memory",
+      "roadmap and P0-P2 plan",
+      "deployed site",
+      "SEO / keyword research reports"
+    ],
+    "exclusions": [
+      "one-off translations",
+      "generic copywriting",
+      "pure chat without a website objective"
+    ],
+    "defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "rankup init 一个新网站，用 TanStack Start 建站并部署到 Cloudflare",
+      "帮我看一下 ai headshot generator 这个词能不能做站",
+      "网站上线三个月了，GSC 显示已抓取但未编入索引，该怎么处理",
+      "做这个市场的关键词难度分析和 SERP 排名盘面",
+      "用 Google Trends 对比两个关键词热度，帮我选一个能建站的方向"
+    ],
+    "should_not_trigger": [
+      "把这篇技术文章翻译成英文",
+      "帮我写一个落地页的产品标题",
+      "Summarize this note in three bullets.",
+      "给这个脚本加一个 --help 参数"
+    ],
+    "near_neighbor": [
+      "用 Google Trends 查一下这周的热搜话题",
+      "只优化这一页的 SEO 标题",
+      "rankup 现在是什么版本"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [
+      "references/cloudflare-stack.md",
+      "references/evolution.md",
+      "references/integrations.md",
+      "references/lifecycle.md",
+      "references/product-launch.md",
+      "references/project-memory.md",
+      "references/seo-growth.md",
+      "references/seo-webcafe.md",
+      "references/trends.md",
+      "references/webcafe-experiences.md"
+    ],
+    "scripts": [
+      "scripts/gt.py"
+    ],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md",
+      "reports/trigger-eval.json"
+    ]
+  },
+  "portability": {
+    "canonical_format": null,
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": [
+      "rankup init",
+      "rankup review",
+      "建站",
+      "网站改版",
+      "Google Trends",
+      "关键词难度",
+      "选词",
+      "AI 搜索优化"
+    ],
+    "execution": {},
+    "trust": {},
+    "permissions": {},
+    "degradation": {}
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

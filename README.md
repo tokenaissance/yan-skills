@@ -1,121 +1,101 @@
 # yan-skills
 
-给做 SEO 和独立开发的人用的 Agent Skills。**建站、选词、发外链、查数据、复盘迭代**，一整条链路都在这个仓库里，装完就能跑。
+> Agent Skills for SEO and indie hackers: **build sites, pick keywords, build backlinks, query data, and review what works** — one chain, install and run.
 
-作者 [Yan](https://github.com/yan-labs)，自用打磨，实测可跑。兼容 Claude Code、Codex CLI、Cursor，以及任何读 `SKILL.md` 的平台。MIT 协议，随便拿去用。
+[![English](https://img.shields.io/badge/Docs-English-black)](README.md)
+[![中文](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-red)](docs/README.zh-CN.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
+
+Built by [Yan](https://github.com/yan-labs) for personal use, battle-tested in real runs. Compatible with Claude Code, Codex CLI, Cursor, and any platform that reads `SKILL.md`. MIT-licensed — take it and use it.
 
 ```bash
 npx skills add yan-labs/yan-skills -g --all
 ```
 
----
+> **Two repos, one codebase.** The install source is the canonical [`yan-labs/yan-skills`](https://github.com/yan-labs/yan-skills). The maintained mirror and releases live in the [`tokenaissance/yan-skills`](https://github.com/tokenaissance/yan-skills) fork. Both point at the same skills; install from either.
 
-## 这套东西解决什么问题
+## What problem this solves
 
-做独立站的人，一天里大概是这么过的：
+A solo site-builder's day goes like this: in the morning you want to try a new niche, so you check whether the keyword has volume and how hard it is — the tool site costs $200/month, so you open a dozen tabs and compare by hand. You settle on a word, then spend two days wiring up scaffolding, Cloudflare, domain, GA, GSC — and next time you build a site you walk through the same traps again. In the afternoon you go build backlinks: you open someone's "500 free backlink sites" list, and of the first twenty, seventeen are dead, two need sign-up review, and one demands a reciprocal link first. At night you open GSC, see "Crawled – currently not indexed", and don't know whether to change the content or resubmit.
 
-早上想做一个新方向，先去查这个词有没有量、难不难做。工具官网一个月两百刀，买不起，于是开十几个标签页手动比对。中午定了词，开始搭站，脚手架、Cloudflare、域名、GA、GSC，一套流程走完两天，下次做站再走一遍，还是踩同样的坑。下午要发外链，翻出别人分享的「500 个免费外链网站」清单，点开前二十个，十七个打不开、两个要注册审核、一个要求你先给他挂链接。晚上打开 GSC，看到「已抓取但未编入索引」，不知道该改内容还是该再提交一次。
+Three months later you switch projects and start all over.
 
-三个月后换个项目，上面这一整套，从头再来一遍。
+**This repo exists to kill "start all over."** It compiles each step into scripts, data files, and decision rules an AI Agent executes directly.
 
-**这个仓库要干掉的就是「从头再来一遍」。** 它把上面每一步都固化成脚本、数据文件和判定规则，让 AI Agent 直接照着执行。
+Two main skills, clearly split:
 
-两个主力 Skill，分工很清楚：
-
-| | 管什么 | 一句话 |
+| | Owns | One-liner |
 |---|---|---|
-| [`rankup`](rankup/) | 网站的**全生命周期** | 从「这个词能不能做」到「上线三个月后该改哪一页」 |
-| [`backlink`](backlink/) | 外链与**登录态数据** | 去哪发、能不能发、发完有没有真的生效 |
+| [`rankup`](rankup/) | a website's **full lifecycle** | from "can this keyword work" to "which page should change three months after launch" |
+| [`backlink`](backlink/) | **backlinks + logged-in data** | where to submit, whether it can be submitted, and whether it actually worked after submission |
 
----
+## `rankup` — full-lifecycle site control
 
-## `rankup` — 网站全生命周期总控
+Version `2.32.0`. It does not re-implement Wrangler, Stripe, or trend tools — it chains those capabilities into one maintainable workflow and remembers what you did on every project.
 
-版本 `2.29.0`。它不重复实现 Wrangler、Stripe 或趋势工具，它负责把这些能力串成一条长期可维护的工作流，并且记住你在每个项目上做过什么。
-
-### 它覆盖的十一个阶段
+### The eleven stages it covers
 
 ```
-0  恢复项目上下文，与线上真实状态对账
-1  机会调研：趋势、关键词、竞争、付费空间
-2  产品定义：页面、数据模型、架构、实施计划
-3  初始化 Monorepo（新站走批准过的 TanStack Start 脚手架）
-4  Cloudflare：SSR、API、D1、R2、环境与 bindings
-5  小步开发，类型 / 测试 / 构建 / 迁移四道验证
-6  按需接入 Stripe、邮件、统计、搜索平台
-7  部署并验证真实域名、SSR、API、上传、鉴权、回调
-8  技术 SEO、内容、索引、转化优化
-9   合规的分发与外链（这一步交给 backlink）
-10  监控、实验、复盘、记录，进入下一轮
+0  Restore project context and reconcile against live state
+1  Opportunity research: trends, keywords, competition, paid space
+2  Product definition: pages, data model, architecture, implementation plan
+3  Initialize Monorepo (new sites use the approved TanStack Start scaffold)
+4  Cloudflare: SSR, API, D1, R2, environment and bindings
+5  Small-step development, four verifications: types / tests / build / migrations
+6  Wire in Stripe, email, analytics, search platforms as needed
+7  Deploy and verify real domain, SSR, API, uploads, auth, callbacks
+8  Technical SEO, content, index, CTR optimization
+9  Compliant distribution and backlinks (handed to `backlink`)
+10 Monitoring, experiments, review, record — into the next round
 ```
 
-已经在跑的老站从当前阶段接入即可，不会强制你从阶段 1 重走。
+Existing sites can join at their current stage; nothing forces a restart from stage 1.
 
-### 两个命令，覆盖 90% 的日常
+### Two commands cover 90% of daily work
 
-**`rankup init`** — 把一个项目接进来。新项目适用，做了很久却还没有项目记忆的项目更适用（这才是常态）。
+**`rankup init`** — onboard a project. New projects, and (more common) projects that have been running for a while with no project memory. It reads `package.json`, route lists, deploy config, `git log`, and queries the live domain, Cloudflare, GSC, and payments in real time — **it trusts no doc's claims**. Then it builds a `.rankup/` project-memory directory, backfills traffic/index/performance/revenue baselines for live sites, produces a technical audit, and lands a roadmap with P0–P2 plans. Greenfield projects create and push their repo as soon as the scaffold runs — **remote is private by default**, because an unreleased project's repo carries your niche and competitor research.
 
-它会读 `package.json`、路由清单、部署配置、`git log`，实时去查域名解不解析、Cloudflare 在不在跑、GSC 接没接、有没有支付，**一律实时查询，不采信任何文档里的说法**。然后建立 `.rankup/` 项目记忆目录，已上线的站补一次流量、索引、性能、收入基线，出一份技术体检，最后落成 roadmap 和 P0–P2 计划。绿地项目在脚手架跑通后立刻建仓推远端，**远端默认私有**，因为未上线项目的仓库里带着选题和竞品调研，公开等于把选题送人。
-
-**`rankup review`** — 定期回头看。
-
-先跑只读体检脚本，拿到机械结论：缺哪些文件、哪些记录超期、脚本的已验证日期过没过期、经验库里有没有重复条目。然后做一件别处很少有人做的事情：**去挖你自己的对话记录**。
+**`rankup review`** — periodic lookback. First a read-only audit script gives mechanical findings: missing files, expired records, expired script verification dates, duplicate experience entries. Then it does something few places do: **it mines your own conversations**.
 
 ```bash
 node scripts/sessions.mjs --project-root . --days 14 --new-only --dump
 ```
 
-最有价值的经验往往还留在对话里，从来没进过任何文档。这个脚本把 Claude Code 和 Codex 的会话浓缩成只剩人说的话和结论，按字节偏移记水位线，上次读到哪这次就从哪接着读。你要在里面找四类东西：用户的纠正、验证过的结论、踩过的坑与根因、已经推翻旧记录的事实。
+The most valuable experience is often still in chat, never in any doc. This script condenses Claude Code and Codex sessions down to just the human's words and conclusions, tracks a byte-offset watermark, and resumes where it left off. You look for four things: user corrections, verified conclusions, pitfalls with root causes, and facts that overturned older records.
 
-### 开箱即用的选词与数据能力
+### Keyword & data out of the box
 
-**`scripts/seo-webcafe.mjs`** — 一个脚本打通[哥飞](https://seo.web.cafe)那套 SEO 工具箱里所有带后端的工具：
+**`scripts/seo-webcafe.mjs`** — one script across the [哥飞](https://seo.web.cafe) SEO toolbox's backend tools:
 
-| 子命令 | 回答什么问题 |
+| Subcommand | Answers |
 |---|---|
-| `kd` | 这个词难不难做，前九名是什么盘面 |
-| `serp` | 谷歌第一页每个结果凭什么排在那 |
-| `audit` | 这个页面 40+ 项体检，扣分扣在哪 |
-| `backlink` | 对方开的外链报价值不值 |
-| `worth` | 这个站按流量和变现方式值多少钱 |
-| `history` | 这个域名前世被谁用过 |
-| `chat` | 直接问站内的 SEO Agent |
+| `kd` | How hard is this keyword; what's the top-9 landscape |
+| `serp` | Why each result on Google's first page ranks there |
+| `audit` | 40+ checks on this page — where it loses points |
+| `backlink` | Is the offered link worth its price |
+| `worth` | How much this site is worth by traffic and monetization |
+| `history` | Who used this domain in a previous life |
+| `chat` | Ask the in-site SEO Agent directly |
 
-**零配置可跑，匿名身份每天 10 次。** 接口地图是 2026-08-07 用真实浏览器会话逐个工具点网络面板得到的，每个工具只发了一次请求，没跑循环、没登录、没绕配额，记在 [`references/seo-webcafe.md`](rankup/references/seo-webcafe.md)。
+**Zero config, anonymous 10/day.** The interface map was captured 2026-08-07 by clicking through each tool's network panel in a real browser session, one request per tool — no loops, no login, no quota-bypassing (see [`references/seo-webcafe.md`](rankup/references/seo-webcafe.md)).
 
-**`scripts/gt.py`** — Google Trends。热度对比、地区分布、相关飙升词、每日热搜四个子命令，首次运行自动建 venv 装 pytrends。配套 [`references/trends.md`](rankup/references/trends.md) 里有三套工作流：小语种市场探测、把模糊方向收敛成真能做站的词、新兴趋势捕捉。
+**`scripts/gt.py`** — Google Trends: compare, regions, rising, daily top. Auto-creates a venv for pytrends on first run. [`references/trends.md`](rankup/references/trends.md) holds three workflows: small-language market probing, converging a fuzzy direction into a buildable word, and catching emerging trends.
 
-**`references/webcafe-experiences.md`** — 哥飞经验帖的十五条可执行裁定，已经译成 Agent 能直接照着判断的形式：
+**`references/webcafe-experiences.md`** — fifteen executable rulings from 哥飞's public posts, translated into Agent-decisionable form: don't rescue old sites, change domains and restart; N sites on one template with swapped brand words = repeating yourself N times; no one-click multi-language translation, re-find words per language; never launch an unfinished site on a real domain; "crawled but not indexed" is a content problem, resubmitting won't fix it; GSC only keeps 16 months, rotate; and more.
 
-- 别救老站，换域名重开
-- 同一套模板换品牌词上 N 个站，等于把自己重复 N 次
-- 多语言不要一键翻译，每种语言重新找词
-- 网站没做完，不要用正式域名上线
-- 想让谷歌显示品牌名而不是域名，六处一起写
-- KGR 用 `intitle` 加引号，且自己验一遍
-- 流量全来自品牌词、功能词没量，首页不用改
-- 瞄准大词却只出小词，不代表选词错了
-- 「已抓取但未编入索引」是内容问题，反复提交没用
-- 页面基本盘是下限，不是目标
-- GSC 数据只留 16 个月，滚动删除
-- 域名只要还有外链就续费
-- Bing 比谷歌好做是错觉，成因是 On-Page 门槛
-- GEO：被推荐的入口已经不只是谷歌
-- 工具选型，含价格现实
+### Project memory: `.rankup/`
 
-### 项目记忆：`.rankup/`
+Every site keeps a `.rankup/` in its own repo: project facts, architecture, decisions, baselines, experiments, releases, logs. Secret files record only name, purpose, environment, and Secret-system location — real values never enter git.
 
-每个网站在自己仓库里存一份 `.rankup/`，记项目事实、架构、决策、基线、实验、发布和日志。密钥文件只记名称、用途、环境和 Secret 系统位置，真实值永远不进 Git。
+Ownership splits into three non-overlapping layers:
 
-归属分三层，互不混淆：
+- **Skill layer** carries only methods that survive without the site. `scripts/validate-rankup.mjs` asserts mechanically — a site name, absolute path, local proxy, or credential location breaks the build.
+- **Project layer** facts, numbers, rulings, and reusable scripts stay in each `<project>/.rankup/`.
+- **Local layer** `registry.md` is a cross-project asset index generated by `scripts/registry.mjs scan`. It contains project paths, so it's gitignored, and an assertion blocks `git add -f`.
 
-- **Skill 层**只带剥离站点后仍然成立的通用方法。`scripts/validate-rankup.mjs` 会做机械断言，出现站点名、绝对路径、本机代理或凭据位置就构建失败。
-- **项目层**的事实、数字、裁决与可复用脚本，留在各自的 `<project>/.rankup/`。
-- **本机层**的 `registry.md` 是跨项目资产索引，由 `scripts/registry.mjs scan` 生成。它含项目路径，所以被 gitignore 排除，并且有断言拦住 `git add -f`。
+Check that table before starting work: if another project already wrote the script, take that path — don't rewrite it.
 
-开工前先查这张表：别的项目已经写好的脚本，直接去那个路径取，不要重写一遍。
-
-### 默认建站栈
+### Default stack
 
 ```bash
 pnpm dlx shadcn@latest init \
@@ -126,129 +106,113 @@ pnpm dlx shadcn@latest init \
   --pointer
 ```
 
-Cloudflare-first：SSR 与 API 走 Workers，事务数据走 D1，文件与导出物走 R2，读多写少的配置走 KV，异步多步任务走 Queues / Workflows，强一致协调走 Durable Objects，真实密钥走 Worker Secrets 或 CI Secrets。资源按实际需求启用，不因为「以后可能需要」提前创建。
+Cloudflare-first: SSR and API on Workers, transactional data on D1, files and exports on R2, read-heavy config on KV, async multi-step tasks on Queues/Workflows, strong-consistency coordination on Durable Objects, real secrets in Worker Secrets or CI Secrets. Enable resources by actual need, never "in case we need it later." The four scaffold traps are documented (each was actually hit) in [`references/lifecycle.md`](rankup/references/lifecycle.md) stage 3.
 
-脚手架的四个坑每一条都实际踩过，写在 [`references/lifecycle.md`](rankup/references/lifecycle.md) 阶段 3。
+## `backlink` — backlinks and logged-in data
 
----
+The `SKILL.md` is XML-structured (v3.1). The reason is in the file header: this Skill is mostly laws and routing, and a law that is easy to skim past is a law that gets broken. Tagged blocks make "which rule did I just violate" answerable by name.
 
-## `backlink` — 外链与登录态数据
+**34 scripts + 19 methodology docs + 4 machine-readable data files.**
 
-`SKILL.md` 是 XML 结构的 v3.0。理由写在文件开头：这个 Skill 的主体是法则和路由，而一条容易被略过的法则，就是一条会被违反的法则。打了标签的块，让「我刚才违反了哪一条」这个问题有名字可答。
+### The data assets: the most expensive part of this Skill
 
-**34 个脚本 + 19 篇方法论 + 4 个机读数据文件。**
+Data files are assets; reference docs are "how to use it, and how not to fool yourself." All machine-readable, PR-able, JSON-schema'd, CI-gated.
 
-### 数据资产：这是这个 Skill 最贵的部分
+**`data/submission-targets.json` — 492 submittable entry points, classified by gate type:**
 
-数据文件是资产，参考文档是「怎么用它，以及怎么不骗自己」。全部机读、可提 PR、有 JSON Schema、有 CI 门禁。
-
-**`data/submission-targets.json` — 492 个可提交入口，按闸位分好类：**
-
-| 闸位 | 数量 | 含义 |
+| Gate | Count | Meaning |
 |---|---:|---|
-| `account` | 162 | 要注册账号 |
-| `open-form` | 131 | 开放表单，直接填 |
-| `captcha-interactive` | 112 | 交互式验证码，人工过闸 |
-| `reciprocal` | 38 | 要求互链 |
-| `captcha-passive` | 19 | 隐形验证码 |
-| `personal-contact` | 18 | 得找人聊 |
-| `email-verify` | 4 | 邮箱验证 |
-| 其余 | 8 | 人工复审 / 没找到入口 / 未知 |
+| `account` | 162 | Requires account sign-up |
+| `open-form` | 131 | Open form, fill directly |
+| `captcha-interactive` | 112 | Interactive captcha, human passes it |
+| `reciprocal` | 38 | Requires a reciprocal link |
+| `captcha-passive` | 19 | Invisible captcha |
+| `personal-contact` | 18 | Need to talk to a human |
+| `email-verify` | 4 | Email verification |
+| other | 8 | Manual review / no entry found / unknown |
 
-这份库的来源之一是社区流传的第三方清单，但每一条都经过实测复核。**举个例子：一份第三方清单去重后 235 个目录，三批并行验完，按「免费 + 免注册 + 免验证码」判定，直接能提交的只有 13 个，开放率 5.5%；另有 48 个已经死了（占 20%，其中一部分仍返回 200，内容已被改成加密货币推广页）。** 这个比例本身就是最有价值的信息，它能让你不再为一份「743 条免费外链」的清单浪费一整个下午。
+One source is community lists, but every entry is re-verified. **Example: after de-dup a third-party list of 235 directories, three parallel batches, judged by "free + no signup + no captcha", only 13 were directly submittable — a 5.5% open rate; 48 were dead (20%), some still returning 200 while their content had been replaced with crypto-promo pages.** That ratio is itself the most valuable information — it stops you from wasting an afternoon on a "743 free backlinks" list.
 
-**`data/free-channels.json` — 27 个能直接发出链接的渠道，其中 25 个免注册。**
+**`data/free-channels.json`** — 27 channels where a link can be placed directly, 25 without signup.
+**`data/paid-platforms.json`** — 141 platforms observed hosting paid placement, ranked by how many independent sites use them. Want to know where competitors buy links? This table answers.
+**`data/index-submission.json`** — URL-only, no-link submission channels. It's separate because it must never enter the link ledger, and it hard-codes one rule: `indexed` must name an engine — write `indexed@google` or `indexed@brave`, never a bare "indexed".
 
-**`data/paid-platforms.json` — 141 个实测观察到承载付费投放的平台**，按有多少个独立站点在用来排序。竞品在哪买的链接，这份表能给你答案。
+### Five browser laws
 
-**`data/index-submission.json` — 只收 URL、不给链接的收录提交渠道。** 它单独成表，因为它永远不该进外链台账。而且写死了一条规则：`indexed` 必须指名引擎，写 `indexed@google` 或 `indexed@brave`，不许写一个光秃秃的「已收录」。
+Read [`references/browser-runtime.md`](backlink/references/browser-runtime.md) before any browser action. The core ones:
 
-### 五条浏览器法则
+1. **Only the owner's browser.** Reuse the authorized session through OpenCLI; scripts never type passwords. When a panel is logged out, the script reports the error and asks the human to log in — it does not act on its own.
+2. **Always through scripts, never click the UI by hand.** Hand-clicks produce differently-shaped results each time — incomparable, and you re-hit the same traps.
+3. **The browser is not a superset of pure HTTP.** Invisible captchas only reveal themselves in raw HTML; after rendering they're gone.
+4. **Sessions are isolated per conversation.** Tabs must not cross.
+5. **Output that looks right may already be wrong.** Modern data grids have no `<table>`/`<tr>`, and virtual scrolling silently drops rows. So row-count self-checks are two-level, reporting virtual-scroll and regex-blind spots separately.
 
-任何浏览器动作之前先读 [`references/browser-runtime.md`](backlink/references/browser-runtime.md)。核心的几条：
+### Submission safety: three gates
 
-1. **只用用户自己的浏览器。** 通过 OpenCLI 复用已授权会话，脚本永远不输入密码。面板处于登出状态时，脚本报错让本人去登，而不是自作主张。
-2. **一律走脚本，不手工点界面。** 手点的结果每次形状不一样，不可比，踩过的坑要重踩。
-3. **浏览器不是纯 HTTP 的超集。** 隐形验证码只在原始 HTML 里露馅，渲染完就看不见了。
-4. **会话按对话隔离**，标签页不许串。
-5. **输出看着正常，数据可能已经错了。** 现代数据网格没有 `<table>` 和 `<tr>`，虚拟滚动会让你静默丢行。所以行数自查分两级，把虚拟滚动和正则盲区分开报。
+`inspect-page.mjs` probes whether the page has a submittable form → `safe-fill.mjs` fills a payload you've already reviewed, **never submitting** → `release-submit-guard.mjs` only releases when you explicitly approve that one submission.
 
-### 提交安全：三道闸
+Batch campaigns have a separate lane. Above a hundred entries, a per-target loop is a textbook "each target right, whole campaign wrong": the right move is a read-only pre-flight of the whole batch, gathering all captchas into one human queue — not letting the whole batch stall on the first captcha. Idempotency keys, queue sharding, resume, and per-action authorization all live in [`references/batch-campaign.md`](backlink/references/batch-campaign.md).
 
-`inspect-page.mjs` 先探这个页面有没有可提交的表单 → `safe-fill.mjs` 填一份你已经审过的 payload，**永不提交** → `release-submit-guard.mjs` 只在你对这一次提交明确点头之后才放行。
+### Evidence-based verification: a directory mention is not a backlink
 
-批量投放另有一条泳道。一百条以上的时候，单目标循环是「每个目标都对、整个战役全错」的典型：正确做法是先只读预检整批、把所有验证码集中成一个人工队列，而不是让整批卡在第一个验证码上。幂等键、队列分片、断点恢复、逐动作授权，全在 [`references/batch-campaign.md`](backlink/references/batch-campaign.md)。
-
-### 证据化验证：目录宣传不等于外链
-
-投出去不算数。台账 `ledger.mjs` 走的是这条链：
+Submitting isn't enough. The ledger (`ledger.mjs`) runs this chain:
 
 ```
 candidate → qualified → filled → submitted → public → indexed@<engine> → rel_verified
 ```
 
-最终公开页必须逐项核对 URL、重定向和 `rel` 属性。一个跳转到 `/out.php?id=123` 的链接，和一个 `rel="nofollow ugc"` 的链接，都不是你以为的那个东西。
+The final public page must be checked item by item for URL, redirect, and `rel` attribute. A link that bounces to `/out.php?id=123`, and a link with `rel="nofollow ugc"`, are not the things you thought they were.
 
-### 顺带解决的一个通用问题：从没有 API 的后台批量取数
+### A general problem solved along the way: harvesting from no-API backends
 
-[`references/harvest.md`](backlink/references/harvest.md) 加三个 `harvest-*` 脚本，`harvest.browser.js` 是个**通用虚拟滚动表格提取器**，按 Y 坐标聚类重建行，列位自适应。
+[`references/harvest.md`](backlink/references/harvest.md) plus three `harvest-*` scripts; `harvest.browser.js` is a **generic virtual-scroll table extractor** that rebuilds rows by Y-coordinate clustering with adaptive columns. This knowledge is link-agnostic — ad-platform backends, e-commerce backends, any no-API SaaS report. Load `backlink` for those tasks too, and read just that one reference.
 
-这套知识跟外链无关，广告平台后台、电商后台、任何没有 API 的 SaaS 报表都能用。做这类任务时照样加载 `backlink`，只读那一篇。
+### Authorized data sources
 
-### 授权数据源
+[`references/authorized-data-sources.md`](backlink/references/authorized-data-sources.md) records how to drive third-party data panels with scripts inside your own logged-in browser: batch traffic screening (one login, N domains, 5s each, resumable), single-keyword volume/difficulty with per-country splits, and four table reports that don't offer export.
 
-[`references/authorized-data-sources.md`](backlink/references/authorized-data-sources.md) 记录如何在你自己已登录的浏览器里，用脚本驱动第三方数据面板取数：批量流量筛查（一次登录、N 个域名、单域名 5 秒、可断点续跑）、单关键词的量与难度与分国家拆分、四份不给导出的表格报表。
+Table reports paginate; scripts either pass `--all-pages` or warn explicitly — they never quietly give you a few hundred rows short.
 
-表格报表会翻页，脚本要么传 `--all-pages`，要么就明确告警，不会安静地少给你几百行。
+**The repo contains no accounts and no keys.** Panel entry points are public URLs; accounts live in your own browser session; a reader of this file gets nothing.
 
-**仓库里不含任何账号和密钥。** 面板入口是公开 URL，账号活在你自己的浏览器会话里，读这个文件的人拿不到任何东西。
+## The other three skills
 
----
+### [`autopilot`](autopilot/) — one sentence to unattended completion
 
-## 另外三个 Skill
+Give it "fix the bug" or "optimize performance" and it investigates, classifies, breaks the task into an XML phased plan, picks skills, defines completion criteria, then runs unattended to the end — including auto deploy, auto E2E, auto code review, no skipped stages. Invoking it authorizes fully unattended execution; it won't ask mid-flight. No dependencies.
 
-### [`autopilot`](autopilot/) — 一句话到无人值守执行完
+### [`skill-link-check`](skill-link-check/) — skill directory audit
 
-扔一句「把 bug 修了」「优化下性能」，它自动调查、分类、拆成 XML 阶段计划、选 Skill、定完成判定，然后无人值守跑到底，包括自动部署、自动 E2E、自动 code review，不跳阶段。调用它等于授权全自动执行，中途不问你。
+Checks whether `.agents/skills` and `.claude/skills` follow the "real source in `.agents/skills`, symlink mirror in `.claude/skills`" convention, and outputs orphan directories, missing links, duplicated directories, broken links, and wrong targets with review-only fix commands. JSON evidence output supported. **It only reports; it never touches your directories.**
 
-无依赖。
+Once you have many skills, eight times out of ten "why doesn't this skill work" is a link problem. Requires Python 3.10+.
 
-### [`skill-link-check`](skill-link-check/) — Skill 目录审计
+### [`skillsmp`](skillsmp/) — search 1.6M+ SKILL.md files for skills
 
-检查 `.agents/skills` 和 `.claude/skills` 是否遵守「前者存真源、后者用符号链接镜像」的约定，输出孤儿目录、缺失链接、重复目录、断链和错误目标，给出需人工复核的修复命令。支持 JSON 证据输出。它只报告，不动你的目录。
+Filter by keyword, category, profession, or language; deliberately surface well-written but under-known skills. Search before you reinvent the wheel.
 
-Skill 装多了以后，「为什么这个 Skill 没生效」十次里有八次是链接的问题。
-
-依赖 Python 3.10+。
-
-### [`skillsmp`](skillsmp/) — 在 160 万份 SKILL.md 里搜技能
-
-按关键词、分类、职业、语言过滤，专门挖那些写得好但没人知道的冷门 Skill。动手造轮子之前先搜一下。
-
----
-
-# 使用说明
-
-## 安装
+## Installation
 
 ```bash
-# 交互式选择要装哪些
+# Interactive selection
 npx skills add yan-labs/yan-skills
 
-# 全局装齐全部
+# Global, all skills
 npx skills add yan-labs/yan-skills -g --all
 
-# 只要 rankup
+# Just rankup
 npx skills add yan-labs/yan-skills --skill rankup -g -y
 
-# 只要 backlink
+# Just backlink
 npx skills add yan-labs/yan-skills --skill backlink -g -y
 
-# 更新
+# Update
 npx skills update rankup -g -y
 ```
 
-装完之后，直接跟你的 Agent 说人话就行，Skill 会自己被触发：
+### Natural-language examples
+
+After installing, just talk to your agent in plain language — the skills trigger themselves:
 
 ```
 帮我看看 "ai headshot generator" 这个词能不能做
@@ -259,52 +223,59 @@ rankup review
 把这个后台的表格数据导出来
 ```
 
-## 前置依赖
+## Prerequisites
 
-| 组件 | 谁需要 | 说明 |
+| Component | Needed by | Notes |
 |---|---|---|
-| Node.js 18+ | 两个 Skill 都要 | 全部脚本的运行时 |
-| Python 3.10+ | `rankup` 的 `gt.py`、`skill-link-check` | 首次运行 `gt.py` 自动建 venv |
-| [OpenCLI](https://github.com/) 及其 Chrome 扩展 | `backlink` 全部浏览器动作 | 复用你自己已登录的 Chrome |
-| Wrangler / Stripe CLI | 按任务 | 只在真正走到那个阶段时才需要 |
+| Node.js 18+ | both main skills | runtime for all scripts |
+| Python 3.10+ | `rankup`'s `gt.py`, `skill-link-check` | `gt.py` auto-builds a venv on first run |
+| [OpenCLI](https://github.com/) + Chrome extension | all `backlink` browser actions | reuses your logged-in Chrome |
+| Wrangler / Stripe CLI | per task | only when you actually reach that stage |
 
-`backlink` 的任何浏览器任务开始之前，先跑一次健康检查：
+Check before you start:
+
+- [ ] Node.js 18+ — `node --version`
+- [ ] Python 3.10+ for `rankup`'s `gt.py` and `skill-link-check`
+- [ ] OpenCLI + Chrome extension for any `backlink` browser task
+- [ ] `npx skills add yan-labs/yan-skills --list` finds all five skills
+
+Before any `backlink` browser task, run a health check:
 
 ```bash
 node backlink/scripts/health.mjs
 ```
 
-## 令牌配置
+## Token configuration
 
-**令牌只放各 Skill 根目录的 `.env`，绝不入库。** 仓库 `.gitignore` 已经排除，`rankup` 的 `validate-rankup.mjs` 会做断言，构建时拦下来。
+**Tokens live only in each skill's root `.env`, never in the repo.** The `.gitignore` excludes them, and `rankup`'s `validate-rankup.mjs` asserts this at build time.
 
 ```bash
 # rankup/.env
-SEO_WEBCAFE_TOKEN=     # 只有 kd 命令需要，wc_mcp_ 开头，去 /kd/docs 自助生成
-                       # 旧键名 KD_TOKEN= 同样识别
-SEO_WEBCAFE_COOKIE=    # 可选。给了就把配额从访客 10/日 提到登录 100/日、VIP 500/日
-                       # chat 命令强制登录，匿名会 401
+SEO_WEBCAFE_TOKEN=     # only kd needs it, wc_mcp_ prefix, generate at /kd/docs
+                       # legacy KD_TOKEN= also recognized
+SEO_WEBCAFE_COOKIE=    # optional; raises quota from guest 10/day to login 100/day, VIP 500/day
+                       # chat forces login; anonymous is 401
 
 # backlink/.env
-TOOLS_SHARE_DASHBOARD_URL=      # 你自己的数据面板入口
-TOOLS_SHARE_APP_ORIGIN=         # 落地 origin，用来校验点开的是哪个产品
-TOOLS_SHARE_APP_ORIGIN_SEMRUSH= # 另一张卡的 origin
+TOOLS_SHARE_DASHBOARD_URL=      # your own data-panel entry
+TOOLS_SHARE_APP_ORIGIN=         # landing origin, used to verify which product opened
+TOOLS_SHARE_APP_ORIGIN_SEMRUSH= # another card's origin
 
-# skillsmp/.env（见 skillsmp/.env.example）
+# skillsmp/.env (see skillsmp/.env.example)
 SKILLSMP_API_KEY=
 ```
 
-大部分都不配也能用：`rankup` 除 `kd` 与 `chat` 外的全部子命令匿名即可跑，`backlink` 的数据库、方法论和填表守卫完全不依赖任何面板。
+Most of it works unconfigured: every `rankup` subcommand except `kd` and `chat` runs anonymous, and `backlink`'s database, methodology, and fill guards depend on no panel.
 
-## 常用命令速查
+## Quick command reference
 
 ### rankup
 
 ```bash
-# 关键词难度 + 前九名盘面
+# Keyword difficulty + top-9 landscape
 node rankup/scripts/seo-webcafe.mjs kd "ai headshot generator"
 
-# 页面体检 / SERP 归因 / 外链估价 / 域名前世
+# Page audit / SERP attribution / link valuation / domain history
 node rankup/scripts/seo-webcafe.mjs audit https://example.com/page
 node rankup/scripts/seo-webcafe.mjs serp "keyword"
 node rankup/scripts/seo-webcafe.mjs backlink https://example.com
@@ -313,121 +284,132 @@ node rankup/scripts/seo-webcafe.mjs history example.com
 # Google Trends
 python3 rankup/scripts/gt.py compare "keyword a" "keyword b"
 
-# 项目体检（只读）
+# Project audit (read-only)
 node rankup/scripts/review.mjs --project-root . --days 30
 
-# 挖会话记录里没沉淀的经验
+# Mine sessions for unsedimented experience
 node rankup/scripts/sessions.mjs --project-root . --days 14 --new-only --dump
-node rankup/scripts/sessions.mjs --project-root . --days 14 --mark   # 消化完才落水位线
+node rankup/scripts/sessions.mjs --project-root . --days 14 --mark   # only advance watermark after digesting
 
-# 跨项目资产索引
+# Cross-project asset index
 node rankup/scripts/registry.mjs scan --roots ~/Project
 
-# 改完 Skill 必跑
+# Must-run after changing the Skill
 node rankup/scripts/validate-rankup.mjs
 ```
 
 ### backlink
 
 ```bash
-# 任何浏览器动作之前
+# Before any browser action
 node backlink/scripts/health.mjs
 
-# 看看 492 条入口库里现在有什么
+# What's in the 492-entry library right now
 node backlink/scripts/targets-select.mjs --stats
 
-# 取一个批次（open / captcha / account …）
+# Take a cohort (open / captcha / account …)
 node backlink/scripts/targets-select.mjs --cohort open
 
-# 探一个页面的表单、登录与验证码状态
+# Probe a page's form, login, and captcha state
 node backlink/scripts/inspect-page.mjs --url https://example.com/submit
 
-# 填一份已审过的 payload，永不提交
+# Fill a reviewed payload, never submit
 node backlink/scripts/safe-fill.mjs --session <name> --scan ./scan.json --payload ./payload.json
 
-# 别人发的外链清单，归一化 + 差异对比
+# A third-party link list: normalize + diff
 node backlink/scripts/third-party-list-ingest.mjs --input ./list.md --out ./leads.json --new-only
 
-# 批量流量筛查：一次登录，N 个域名，可续跑
+# Batch traffic screening: one login, N domains, resumable
 node backlink/scripts/similarweb-batch.mjs --domains-file domains.txt --out traffic.jsonl
 
-# 台账
+# Ledger
 node backlink/scripts/ledger.mjs list --state public
 
-# 改数据必跑，CI 跑的就是这条
+# Must-run after changing data; CI runs this
 node backlink/scripts/validate-data.mjs
 ```
 
-## 给这个仓库提 PR
+## Contributing to this repo
 
-数据文件欢迎补充，这是这个项目最值钱的部分。规则见 [`backlink/CONTRIBUTING.md`](backlink/CONTRIBUTING.md)，核心只有一条：
+Data files welcome — that's the most valuable part of this project. Rules in [`backlink/CONTRIBUTING.md`](backlink/CONTRIBUTING.md); the core is one rule:
 
-**证据规则。** 每一条渠道的状态都要有实测支撑，不接受「我看别人清单上有」。你说它 `open-form`，那就是你自己打开过那个表单；你说它 `indexed`，那就得指名是哪个引擎。
+**The evidence rule.** Every channel's state must be backed by a live observation. "I saw it on someone's list" doesn't count. You say `open-form`, you opened that form yourself; you say `indexed`, you name the engine.
 
-提交前跑通门禁：
+Run the gate before submitting:
 
 ```bash
-node backlink/scripts/validate-data.mjs   # 必须 exit 0
+node backlink/scripts/validate-data.mjs   # must exit 0
 ```
 
-## 本地开发
+## Local development
 
-要改这些 Skill 本身，把全局技能目录直接链接到本仓库，让全局只存在一份真源：
+To change the skills themselves, link the global skill directory to this repo so only one real source exists globally:
 
 ```bash
 git clone https://github.com/yan-labs/yan-skills.git
 cd yan-skills
 
-# 建立或修复链接（把被替换掉的实体目录先备份，不直接删）
+# Create or repair links (back up replaced real dirs first, don't delete them)
 node scripts/link-skills.mjs
 
-# 只检查漂移，有问题退出 1，适合放 CI 或定期巡检
+# Check-only; exit 1 on drift; good for CI or scheduled checks
 node scripts/link-skills.mjs --check
 ```
 
-链接建立之后仓库里的改动即时生效，**这时不要再对这些 Skill 跑 `npx skills update`**，那会把符号链接换回实体目录副本，双份维护随之回归。
+Once linked, repo changes take effect immediately — **and don't run `npx skills update` on these skills anymore**, it replaces symlinks with real-dir copies and the double maintenance comes back.
 
-两道保护：
+Two safeguards:
 
-- `rankup` 的自动更新会检测仓库根的 `.skill-source` 标记，识别出自己正从源码运行时拒绝执行更新（`blocked / source-checkout`），所以定时检查不会覆盖你的本地改动。这个标记位于仓库根，而 `skills add/update` 只复制单个 Skill 子目录，所以它永远不会随安装副本分发，也不会误伤项目级安装。
-- 万一链接还是被替换掉了，重跑 `node scripts/link-skills.mjs` 就能恢复。
+- `rankup`'s auto-update detects the repo-root `.skill-source` marker, recognizes it's running from source, and refuses to update (`blocked / source-checkout`), so scheduled checks never overwrite your local edits. The marker sits at repo root; `skills add/update` only copies single skill subdirectories, so it never ships with an installed copy and never hurts project-level installs.
+- If a link is replaced anyway, rerun `node scripts/link-skills.mjs` to restore.
 
-## 常见问题
+### Verify a sub-skill against the Production gate
 
-**Q：不装 OpenCLI 能用 `backlink` 吗？**
-能。492 条入口库、141 个付费平台、19 篇方法论、外链质量评分与外联模板，全都是纯数据和纯方法，不需要任何浏览器。只有实际驱动浏览器取数和填表才需要。
+Each sub-skill ships fastagent-meta-skill evidence — `manifest.json`, `agents/interface.yaml`, `evals/trigger_cases.json`, and `reports/{skill-ir,trigger-eval,prior-art-research,creation-handoff}`. Run the gate before pushing a change:
 
-**Q：不给 `rankup` 配令牌能用吗？**
-基本能。`seo-webcafe.mjs` 除 `kd` 和 `chat` 之外全部匿名可跑，配额访客 10/日。`kd` 要一个自助生成的公开 API 令牌，`chat` 要登录态。`gt.py` 完全不需要令牌。
+```bash
+python3 /path/to/fastagent-meta-skill/scripts/validate_skill.py rankup
+python3 /path/to/fastagent-meta-skill/scripts/trigger_eval.py rankup --cases evals/trigger_cases.json --output reports/trigger-eval.json
+```
 
-**Q：Skill 装了但没被触发？**
-跑 `skill-link-check`。十次里有八次是符号链接的问题。
+## Troubleshooting
 
-**Q：`rankup` 会不会把我的项目信息写进 Skill 里？**
-不会，而且有机械门禁拦着。`validate-rankup.mjs` 断言 Skill 里不许出现站点名、域名、流量数字、property ID、绝对路径和凭据位置，出现即构建失败。项目侧的事实留在各自的 `.rankup/`，跨项目索引 `registry.md` 被 gitignore 排除。
+**Q: Can `backlink` be used without OpenCLI?**
+Yes. The 492-entry library, 141 paid platforms, 19 methodology docs, link-quality scoring, and outreach templates are all pure data and methods — no browser needed. Only actually driving the browser for harvesting and filling requires it.
 
-**Q：这些数据多久更新一次？**
-`backlink/data/` 每次实测都会回写，`updatedAt` 字段是权威。方法论文档写的是「已验证日期」，过期的会在 `rankup review` 里被标出来。
+**Q: Can `rankup` be used without tokens?**
+Mostly. Every `seo-webcafe.mjs` subcommand except `kd` and `chat` runs anonymous, guest quota 10/day. `kd` needs a self-served public API token; `chat` needs login state. `gt.py` needs no token.
 
----
+**Q: The skill is installed but not triggering?**
+Run `skill-link-check`. Eight times out of ten it's a symlink problem.
 
-## 致谢
+**Q: Will `rankup` write my project info into the Skill?**
+No, and there's a mechanical gate. `validate-rankup.mjs` asserts the Skill must not contain site names, domains, traffic numbers, property IDs, absolute paths, or credential locations — it fails the build if they appear. Project-side facts stay in each `.rankup/`; the cross-project `registry.md` index is gitignored.
 
-这些 Skill 吸收了其他开源项目的成果，在此致谢：
+**Q: How often does this data update?**
+`backlink/data/` is rewritten on every live verification; `updatedAt` is authoritative. Methodology docs carry a "verified date"; expired ones get flagged in `rankup review`.
 
-- **[flaqai/backlink_skills](https://github.com/flaqai/backlink_skills)**（MIT，Flaq AI）——`backlink` 的批量投放运维层来自这个项目：幂等键与队列分片、**验证优先**（先只读预检整批、把验证码集中成一个人工队列，而不是让整批卡在第一个验证码上）、逐动作授权、可断点恢复的状态集、锚文本策略，以及「已发布条目必须与已提交表单分开报」的报告纪律。见 [`backlink/references/batch-campaign.md`](backlink/references/batch-campaign.md)。他们公开的 `Free-backlink-list.md`（743 条渠道）也是本 Skill 迄今测过的最大一份第三方线索清单，归一化与差异对比的结果记在 [`backlink/references/instant-publish.md`](backlink/references/instant-publish.md)。需要说明的是，那份清单和那两个提交 Skill 在他们仓库里是分开的资产，Skill 本身不带渠道，URL 由使用者提供。
-- **[aaron-he-zhu/seo-geo-claude-skills](https://github.com/aaron-he-zhu/seo-geo-claude-skills)**（Apache-2.0）——`backlink/references/` 下的质量评分矩阵、分析模板与外联模板。
-- **[哥飞](https://seo.web.cafe)** —— `rankup` 的选词与体检能力建立在他做的 SEO 工具箱之上，`references/webcafe-experiences.md` 的十五条裁定也来自他公开的经验帖。
+## Design philosophy
 
-### 已并入 `backlink` 的两个 Skill（2026-08-16）
+Skills aren't a set of immutable "standard answers." They're personal experience compiled into source code an Agent can execute. Install it, run a real task, then fork: delete the rules that aren't yours, add your own judgment, tools, style, evals, and release boundaries. A skill that increasingly resembles you is one that actually works for you.
 
-原先的 `backlink-analyzer` 与 `browser-harvest` 已合并进 `backlink` 并删除，从三个减到一个：
+## Credits and sources
 
-- **`backlink-analyzer`**（外链质量、毒性与竞争缺口分析）本身是一套纯提示词模板，没有脚本也没有浏览器通道，能描述外链画像却拿不到画像。现为 `backlink/references/` 下的 `link-quality-rubric.md`、`analysis-templates.md`、`outreach-templates.md`，保留上游 Apache-2.0 许可证与归属。
-- **`browser-harvest`**（从登录态后台批量取数）现为 `backlink/references/harvest.md` 加三个 `scripts/harvest-*`。**合并的代价照例说明**：这套知识本身是通用的，现在却挂在一个以外链命名的 Skill 下。做与外链无关的后台取数时，仍然要加载 `backlink` 再读那一篇。
+These skills absorb work from other open-source projects:
 
-同样，`gt`（Google Trends 与选词工作流）于 2026-08-16 并入 `rankup` 并删除，现为 `rankup/references/trends.md` 加 `scripts/gt.py`。合并时发现 `gt/scripts/kd.py` 和已有的 `scripts/seo-webcafe.mjs` 打的是同一个接口、用的是同一种令牌，只是两套实现两个变量名，于是删掉重复的那份。代价是 `gt` 原本的触发面现在要经由 `rankup` 才能到达，description 已补上那批词。
+- **[flaqai/backlink_skills](https://github.com/flaqai/backlink_skills)** (MIT, Flaq AI) — `backlink`'s batch-campaign operations layer: idempotency keys and queue sharding, **verify-first** (read-only pre-flight of the whole batch, captchas gathered into one human queue instead of stalling the batch), per-action authorization, resumable state sets, anchor-text strategy, and the reporting discipline that published entries report separately from filled forms. See [`backlink/references/batch-campaign.md`](backlink/references/batch-campaign.md). Their public `Free-backlink-list.md` (743 channels) is also the largest third-party lead list this Skill has tested; the normalization and diff results are in [`backlink/references/instant-publish.md`](backlink/references/instant-publish.md). Note that list and those two submit skills are separate assets in their repo — the Skill itself ships no channels, URLs come from the user.
+- **[aaron-he-zhu/seo-geo-claude-skills](https://github.com/aaron-he-zhu/seo-geo-claude-skills)** (Apache-2.0) — the quality-scoring matrix, analysis templates, and outreach templates under `backlink/references/`.
+- **[哥飞](https://seo.web.cafe)** — `rankup`'s keyword and audit capabilities build on his SEO toolbox; the fifteen rulings in `references/webcafe-experiences.md` also come from his public posts.
+
+### Two skills merged into `backlink` (2026-08-16)
+
+The former `backlink-analyzer` and `browser-harvest` merged into `backlink` and were deleted, going from three to one:
+
+- **`backlink-analyzer`** (link-quality, toxicity, and competitor-gap analysis) was a set of pure prompt templates — no scripts, no browser channel; it could describe a link profile but not obtain one. Now it's `backlink/references/`'s `link-quality-rubric.md`, `analysis-templates.md`, `outreach-templates.md`, keeping the upstream Apache-2.0 license and attribution.
+- **`browser-harvest`** (batch table extraction from logged-in backends) is now `backlink/references/harvest.md` plus three `scripts/harvest-*`. **The merge cost is stated as usual**: this knowledge is general-purpose yet now hangs under a backlink-named Skill. For non-backlink backend harvesting, load `backlink` anyway and read that one reference.
+
+Likewise, `gt` (Google Trends and keyword workflows) merged into `rankup` and was deleted on 2026-08-16, now `rankup/references/trends.md` plus `scripts/gt.py`. The merge found that `gt/scripts/kd.py` and the existing `scripts/seo-webcafe.mjs` hit the same endpoint with the same token under two different variable names, so the duplicate was removed. The cost: `gt`'s former trigger surface is now reached through `rankup`, and the description picked up that vocabulary.
 
 ## License
 
-除另有标注的第三方内容外，仓库内容采用 MIT License。`backlink/references/` 下三份分析模板来自上游 Apache-2.0 项目，许可证副本与归属说明保留在同目录的 `LICENSE-analysis-templates-Apache-2.0`。
+Except for separately-noted third-party content, the repo is MIT-licensed. The three analysis templates under `backlink/references/` come from an upstream Apache-2.0 project; the license copy and attribution live in that directory's `LICENSE-analysis-templates-Apache-2.0`.

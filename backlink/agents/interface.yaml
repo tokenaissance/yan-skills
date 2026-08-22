@@ -1,0 +1,25 @@
+interface:
+  display_name: "Backlink Operator"
+  short_description: "Discover, qualify, fill, verify backlinks, and harvest tables from logged-in dashboards."
+  default_prompt: "Use $backlink to discover and qualify backlink opportunities, prepare safe fills for review, submit only after approval, verify outcomes with evidence, and harvest no-API dashboard tables through the owner's logged-in Chrome."
+compatibility:
+  adapter_targets:
+    - openai
+    - claude
+    - generic
+    - agent-skills-compatible
+  activation:
+    - "外链"
+    - "反链"
+    - "找外链"
+    - "发外链"
+    - "外链分析"
+    - "抓后台数据"
+    - "导出报表"
+    - "backlinks"
+    - "directory submission"
+  gates:
+    - "任何浏览器动作前先跑 health.mjs"
+    - "只用自己的登录态浏览器，脚本永不输入密码"
+    - "release-submit-guard：每次提交都要人点头"
+    - "台账状态必须有证据，indexed 必须指名引擎"

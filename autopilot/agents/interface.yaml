@@ -1,0 +1,22 @@
+interface:
+  display_name: "Autopilot"
+  short_description: "Turn one vague instruction into a structured plan and execute it fully unattended."
+  default_prompt: "Use $autopilot when given a vague task to take it from investigation through phased planning to unattended execution — including deployment, E2E, and code review — without asking for confirmation."
+compatibility:
+  adapter_targets:
+    - openai
+    - claude
+    - generic
+    - agent-skills-compatible
+  activation:
+    - "autopilot"
+    - "auto"
+    - "帮我规划"
+    - "自己搞定"
+    - "直接跑"
+    - "你来拆"
+    - "别问我怎么做"
+  gates:
+    - "调用 autopilot = 授权全自动无人值守执行"
+    - "不允许跳过任何阶段"
+    - "不允许半途而废"

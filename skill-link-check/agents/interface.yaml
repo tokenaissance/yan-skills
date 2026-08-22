@@ -1,0 +1,20 @@
+interface:
+  display_name: "Skill Link Check"
+  short_description: "Audit .agents/skills vs .claude/skills symlink layouts and report drift with fix commands."
+  default_prompt: "Use $skill-link-check to audit .agents/skills and .claude/skills layouts, verify the real source is in .agents/skills and the mirror is in .claude/skills, and report orphans, missing links, duplicates, broken links, and wrong targets with reviewable fix commands."
+compatibility:
+  adapter_targets:
+    - openai
+    - claude
+    - generic
+    - agent-skills-compatible
+  activation:
+    - "skill 没生效"
+    - "skill 不一致"
+    - "为什么 skill 没识别到"
+    - "检查 skill 链接"
+    - "ghost skill"
+    - "broken skill link"
+    - "missing skill"
+  gates:
+    - "只报告，不自动移动/删除/覆盖任何被审计目录"

@@ -1,0 +1,113 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "skill_search",
+    "skillsmp_platform",
+    "treasure_hunt",
+    "avoid_reinvent"
+  ],
+  "positive_concepts": {
+    "skill_search": [
+      "找个 skill",
+      "有没有现成的 skill",
+      "搜一下 skill",
+      "find a skill",
+      "search skills",
+      "discover skills",
+      "skill 搜索",
+      "搜索 skill",
+      "找 skill",
+      "agent skill",
+      "搜一个"
+    ],
+    "skillsmp_platform": [
+      "skillsmp",
+      "SkillsMP",
+      "skills 市场",
+      "skill 市场",
+      "agent skill 搜索"
+    ],
+    "treasure_hunt": [
+      "挖宝",
+      "冷门 skill",
+      "写得好但没人知道",
+      "没人知道",
+      "冷门",
+      "treasure"
+    ],
+    "avoid_reinvent": [
+      "避免重复造轮子",
+      "重复造轮子",
+      "已经有哪些 skill",
+      "哪些 skill",
+      "判断领域有哪些 skill",
+      "有没有现成"
+    ]
+  },
+  "negative_patterns": [
+    "翻译",
+    "写首诗",
+    "总结一下",
+    "translate",
+    "summarize",
+    "creative writing"
+  ],
+  "should_trigger": [
+    {
+      "text": "在 SkillsMP 里搜一下 skill",
+      "family": "direct_search"
+    },
+    {
+      "text": "帮我搜一个写得好但没人知道的冷门 skill",
+      "family": "treasure_hunt"
+    },
+    {
+      "text": "有没有现成的 skill，避免重复造轮子",
+      "family": "avoid_reinvent"
+    },
+    {
+      "text": "这个领域已经有哪些 skill，帮我搜一下 skill",
+      "family": "domain_inventory"
+    },
+    {
+      "text": "在 skills 市场找 agent skill",
+      "family": "marketplace_lookup"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "把这篇文档翻译成英文",
+      "family": "translate_only"
+    },
+    {
+      "text": "写一首关于海洋的诗",
+      "family": "creative_only"
+    },
+    {
+      "text": "帮我改一下这个脚本的 bug",
+      "family": "bugfix_only"
+    },
+    {
+      "text": "总结一下这份会议纪要",
+      "family": "summary_only"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "这个 skill 是干什么的",
+      "family": "concept_query_only"
+    },
+    {
+      "text": "帮我看一下已安装的 skill 列表",
+      "family": "list_only"
+    },
+    {
+      "text": "搜索引擎怎么优化",
+      "family": "seo_query_only"
+    },
+    {
+      "text": "搜一下这个关键词的流量",
+      "family": "keyword_volume_only"
+    }
+  ]
+}
