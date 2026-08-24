@@ -385,7 +385,11 @@ async function main() {
   if (a.out) {
     const path = a.out;
     if (path.endsWith("/")) { mkdirSync(path, { recursive: true }); writeFileSync(join(path, `${cmd}.json`), JSON.stringify(results, null, 2)); }
-    else writeFileSync(path, JSON.stringify(results.length === 1 ? results[0] : results, null, 2));
+    else {
+      // 父目录不存在时 writeFileSync 直接 ENOENT——先建目录再写，否则"已写入"只在目录已存在时成立。
+      mkdirSync(dirname(path), { recursive: true });
+      writeFileSync(path, JSON.stringify(results.length === 1 ? results[0] : results, null, 2));
+    }
     console.error(`已写入 ${path}`);
   }
 }
